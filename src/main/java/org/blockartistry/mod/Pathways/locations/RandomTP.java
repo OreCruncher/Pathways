@@ -29,6 +29,7 @@ import java.util.Random;
 import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
+import org.blockartistry.mod.Pathways.ModLog;
 import org.blockartistry.mod.Pathways.ModOptions;
 import org.blockartistry.mod.Pathways.util.XorShiftRandom;
 
@@ -39,6 +40,9 @@ import net.minecraft.world.World;
 
 public class RandomTP extends Target {
 
+	
+	private static final int CHUNK_ATTEMPTS = 500;
+	
 	protected static Set<Block> badSpots = new HashSet<Block>();
 
 	static {
@@ -87,9 +91,39 @@ public class RandomTP extends Target {
 
 		final Random rand = XorShiftRandom.shared;
 
-		// Calculate the target chunk
-		final int newXBase = ((location.x >> 4) + rand.nextInt(minRange) - minRange / 2) << 4;
-		final int newZBase = ((location.z >> 4) + rand.nextInt(minRange) - minRange / 2) << 4;
+		final int range = maxRange * 2;
+		int chunkX = 0;
+		int chunkZ = 0;
+		boolean hit = false;
+		for (int i = 0; i < CHUNK_ATTEMPTS; i++) {
+			
+			chunkX = rand.nextInt(range) - maxRange;
+			chunkZ = rand.nextInt(range) - maxRange;
+			
+			if(chunkX >= minRange || chunkZ >= minRange) {
+
+				ModLog.info("Chunk located after %d attempts", i);
+				hit = true;
+				
+				// 50/50 shot at negating the offset
+				if(rand.nextInt(2) == 0)
+					chunkX = -chunkX;
+				if(rand.nextInt(2) == 0)
+					chunkZ = -chunkZ;
+				
+				// Convert to actual chunk coordinates to block
+				// coordinates as a base for search.
+				chunkX = ((location.x >> 4) + chunkX) << 4;
+				chunkZ = ((location.z >> 4) + chunkZ) << 4;
+				break;
+			}
+		}
+
+		// Couldn't find a chunk
+		if (!hit) {
+			ModLog.info("Couldn't find a chunk");
+			return null;
+		}
 
 		// Make the necessary attempts to find a safe location within the chunk.
 		// Don't scatter attempts across chunks because that isn't fair to the
@@ -97,8 +131,8 @@ public class RandomTP extends Target {
 		final int attempts = ModOptions.getMaxTeleportAttempts();
 		for (int i = 0; i < attempts; i++) {
 
-			final int newX = newXBase + rand.nextInt(16);
-			final int newZ = newZBase + rand.nextInt(16);
+			final int newX = chunkX + rand.nextInt(16);
+			final int newZ = chunkZ + rand.nextInt(16);
 			final int newY = world.getTopSolidOrLiquidBlock(newX, newZ);
 
 			if (newY != -1) {
