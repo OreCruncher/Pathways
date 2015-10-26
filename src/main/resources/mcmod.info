@@ -9,7 +9,7 @@
   "updateUrl": "",
   "authorList": ["OreCruncher"],
   "credits": "Various Bukkit plugin developers that blazed the trail",
-  "logoFile": "",
+  "logoFile": "assets/pathways/textures/logo.png",
   "screenshots": [],
   "dependencies": []
 }

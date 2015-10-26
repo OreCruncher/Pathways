@@ -140,7 +140,7 @@ public final class VersionCheck implements Runnable {
 	private VersionCheck() {
 	}
 
-	private static final String CURSE_PROJECT_NAME = "230570-restructured";
+	private static final String CURSE_PROJECT_NAME = "237360-pathways";
 	private static final String MOD_NAME_TEMPLATE = "Pathways-1.7.10-[].jar";
 
 	public static void register() {
@@ -164,7 +164,7 @@ public final class VersionCheck implements Runnable {
 
 		if (event.player instanceof EntityPlayer) {
 			if (status == UpdateStatus.OUTDATED) {
-				final String msg = StatCollector.translateToLocalFormatted("msg.NewVersionAvailable.restructured",
+				final String msg = StatCollector.translateToLocalFormatted("msg.NewVersionAvailable.pathways",
 						Pathways.MOD_NAME, currentVersion, CURSE_PROJECT_NAME);
 				IChatComponent component = IChatComponent.Serializer.func_150699_a(msg);
 				event.player.addChatMessage(component);
