@@ -25,8 +25,7 @@
 package org.blockartistry.mod.Pathways.locations;
 
 import org.apache.commons.lang3.StringUtils;
-import org.blockartistry.mod.Pathways.ModOptions;
-import org.blockartistry.mod.Pathways.player.LastTeleportTick;
+import org.blockartistry.mod.Pathways.player.LastTeleportTracker;
 
 import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.server.MinecraftServer;
@@ -72,26 +71,27 @@ public abstract class Target {
 		return server != null;
 	}
 
-	protected boolean isCooldownRestricted(final EntityPlayerMP player) {
-		return (MinecraftServer.getServer().getTickCounter() - LastTeleportTick.getLast(player)) < (ModOptions
-				.getTimeBetweenAttempts() * 20);
-	}
-
 	public void travel(final EntityPlayerMP player) {
 		String playerMessage = null;
-		if (isCooldownRestricted(player)) {
+		if (LastTeleportTracker.isCooldownRestricted(player)) {
 			playerMessage = StatCollector.translateToLocal("msg.Pathways.TeleportCooldownActive");
 		} else if (!isDimensionLoaded(this.location.dimension)) {
 			playerMessage = StatCollector.translateToLocal("msg.Pathways.DimensionNotLoaded");
 		} else if (player.riddenByEntity != null || player.ridingEntity != null) {
 			playerMessage = StatCollector.translateToLocal("msg.Pathways.CannotRideEntity");
 		} else {
+			// Set the teleport cool down at this point.  Not sure if a teleport
+			// will occur.  Reason is that the location select routine could
+			// cause chunk loading and we don't want a player spamming.
+			LastTeleportTracker.setLastTick(player);
+			
+			// Get the target location.  If null is returned that means that a
+			// valid location could not be found.
 			final Coordinates target = selectLocation();
 			if (target != null) {
 
 				// Set the target location
 				TargetManager.setPlayerLocation(player, target);
-				LastTeleportTick.setLast(player, MinecraftServer.getServer().getTickCounter());
 
 				playerMessage = StatCollector.translateToLocalFormatted("msg.Pathways.TeleportedTo",
 						target.getDimensionName(), target.x, target.y, target.z);

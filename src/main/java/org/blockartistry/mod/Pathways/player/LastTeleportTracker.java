@@ -31,21 +31,35 @@ import java.util.UUID;
 import org.blockartistry.mod.Pathways.ModOptions;
 
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.server.MinecraftServer;
 
-public final class LastTeleportTick {
+public final class LastTeleportTracker {
 
+	private static final int TELEPORT_TICK_INTERVAL = ModOptions.getTimeBetweenAttempts() * 20;
 	private static final Map<UUID, Integer> tickTrack = new HashMap<UUID, Integer>();
-	
-	private LastTeleportTick() {
-		
+
+	private LastTeleportTracker() {
+
 	}
-	
-	public static int getLast(final EntityPlayerMP player) {
+
+	public static int getCurrentTick() {
+		return MinecraftServer.getServer().getTickCounter();
+	}
+
+	public static int getLastTick(final EntityPlayerMP player) {
 		final Integer tick = tickTrack.get(player.getPersistentID());
-		return tick == null ? ModOptions.getTimeBetweenAttempts() * -20 : tick.intValue();
+		return tick == null ? -TELEPORT_TICK_INTERVAL : tick.intValue();
 	}
-	
-	public static void setLast(final EntityPlayerMP player, final int tick) {
+
+	public static void setLastTick(final EntityPlayerMP player, final int tick) {
 		tickTrack.put(player.getPersistentID(), new Integer(tick));
+	}
+
+	public static void setLastTick(final EntityPlayerMP player) {
+		setLastTick(player, getCurrentTick());
+	}
+
+	public static boolean isCooldownRestricted(final EntityPlayerMP player) {
+		return (getCurrentTick() - getLastTick(player)) < TELEPORT_TICK_INTERVAL;
 	}
 }

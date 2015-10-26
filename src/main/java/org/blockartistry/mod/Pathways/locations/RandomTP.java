@@ -38,25 +38,28 @@ import net.minecraft.init.Blocks;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.world.World;
 
-public class RandomTP extends Target {
-
+public final class RandomTP extends Target {
 	
-	private static final int CHUNK_ATTEMPTS = 500;
-	
-	protected static Set<Block> badSpots = new HashSet<Block>();
+	private static final int ATTEMPTS = ModOptions.getMaxTeleportAttempts();
+	private static final int CHUNK_ATTEMPTS = ATTEMPTS * 10;
+	private static final Set<Block> BAD_BLOCKS = new HashSet<Block>();
 
 	static {
-		badSpots.add(Blocks.air);
-		badSpots.add(Blocks.lava);
-		badSpots.add(Blocks.flowing_lava);
-		badSpots.add(Blocks.bedrock);
-		badSpots.add(Blocks.cactus);
-		badSpots.add(Blocks.fire);
+		addBadBlock(Blocks.air);
+		addBadBlock(Blocks.lava);
+		addBadBlock(Blocks.flowing_lava);
+		addBadBlock(Blocks.bedrock);
+		addBadBlock(Blocks.cactus);
+		addBadBlock(Blocks.fire);
 
 		if (!ModOptions.getAllowWaterLandings()) {
-			badSpots.add(Blocks.water);
-			badSpots.add(Blocks.flowing_water);
+			addBadBlock(Blocks.water);
+			addBadBlock(Blocks.flowing_water);
 		}
+	}
+	
+	public static void addBadBlock(final Block block) {
+		BAD_BLOCKS.add(block);
 	}
 
 	public final int minRange;
@@ -71,7 +74,7 @@ public class RandomTP extends Target {
 
 	protected boolean isSafeLandingBlock(final World world, final int x, final int y, final int z) {
 		final Block block = world.getBlock(x, y, z);
-		return !badSpots.contains(block);
+		return !BAD_BLOCKS.contains(block);
 	}
 
 	protected boolean canBreath(final World world, final int x, final int y, final int z) {
@@ -102,7 +105,7 @@ public class RandomTP extends Target {
 			
 			if(chunkX >= minRange || chunkZ >= minRange) {
 
-				ModLog.info("Chunk located after %d attempts", i);
+				ModLog.debug("Chunk located after %d attempts", i);
 				hit = true;
 				
 				// 50/50 shot at negating the offset
@@ -121,20 +124,20 @@ public class RandomTP extends Target {
 
 		// Couldn't find a chunk
 		if (!hit) {
-			ModLog.info("Couldn't find a chunk");
+			ModLog.debug("Couldn't find a chunk");
 			return null;
 		}
 
 		// Make the necessary attempts to find a safe location within the chunk.
 		// Don't scatter attempts across chunks because that isn't fair to the
 		// server and other players.
-		final int attempts = ModOptions.getMaxTeleportAttempts();
-		for (int i = 0; i < attempts; i++) {
+		for (int i = 0; i < ATTEMPTS; i++) {
 
 			final int newX = chunkX + rand.nextInt(16);
 			final int newZ = chunkZ + rand.nextInt(16);
 			final int newY = world.getTopSolidOrLiquidBlock(newX, newZ);
 
+			// There may not be an appropriate block for landing
 			if (newY != -1) {
 				if (isSafeLandingBlock(world, newX, newY - 1, newZ)) {
 					if (canBreath(world, newX, newY + 1, newZ)) {
@@ -144,6 +147,7 @@ public class RandomTP extends Target {
 			}
 		}
 
+		// Couldn't find a spot
 		return null;
 	}
 
