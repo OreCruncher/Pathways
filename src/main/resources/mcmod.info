@@ -1,0 +1,16 @@
+[
+{
+  "modid": "pathways",
+  "name": "Pathways",
+  "description": "Player translocation services via Forge mod",
+  "version": "$version",
+  "mcversion": "$mcversion",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["OreCruncher"],
+  "credits": "Various Bukkit plugin developers that blazed the trail",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]

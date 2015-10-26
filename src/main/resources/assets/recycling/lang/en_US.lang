@@ -1,0 +1,30 @@
+# US English Translations
+msg.Pathways=Pathways
+
+msg.Pathways.TeleportType.unknown=Unknown
+msg.Pathways.TeleportType.warp=Warp
+msg.Pathways.TeleportType.random=Random
+	
+msg.Pathways.TeleportedTo=§oTeleport to %s, %d, %d, %d
+msg.Pathways.NoClearSpot=§b§oDiffuse energy at the target location prevents teleport.
+msg.Pathways.DimensionNotLoaded=§b§oThe energy of the dimension is too fragile for teleport.
+msg.Pathways.CannotRideEntity=§b§oThe mount would surely die if you attempt the teleport.
+msg.Pathways.TeleportCooldownActive=§bYou must wait a bit longer before another teleport.
+
+msg.Pathways.TeleportCommandUsage=/%s <locationName>
+msg.Pathways.TeleportCommandError.missingName=§cLocation name has not been specified.
+msg.Pathways.TeleportCommandError.unknownTarget=§cThe location specified has not been configured.
+
+msg.Pathways.ConfigureCommandUsage=/%s <list> | < <add|remove> <name> [range]>
+msg.Pathways.ConfigureCommandError.incorrectFormat=Format of the command is incorrect.
+msg.Pathways.ConfigureCommandError.unknownSubcommand=Unknown subcommand; add|remove|list expected.
+msg.Pathways.ConfigureCommandError.rangeMissing=Range for the random teleport was not specified.
+msg.Pathways.ConfigureCommandError.missingRange=Minimum and maximum range must be specified.
+msg.Pathways.ConfigureCommandError.minGreaterMax=Minimum range must be less or equal to the maximum range.
+msg.Pathways.ConfigureCommand.added=%s was added.
+msg.Pathways.ConfigureCommand.removed='%s' was removed.
+
+msg.Pathways.IncorrectSignFormat=The format of the sign is incorrect or the target does not exist.
+
+# Version checking strings
+msg.NewVersionAvailable.pathways=["§6Update Available: §9[",{"text":"§2%s §ev%s§f","color":"gold","hoverEvent":{"action":"show_text","value":{"text":"Click for CurseForge Project Page","color":"aqua"}},"clickEvent":{"action":"open_url","value":"http://minecraft.curseforge.com/mc-mods/%s"}},"§9]"]
