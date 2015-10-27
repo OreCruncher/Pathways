@@ -72,11 +72,11 @@ public final class ModOptions {
 
 		// CATEGORY: Global
 		comment = "Max attempts at teleport for a given execution";
-		maxTeleportAttempts = config.getInt(CONFIG_MAX_TELEPORT_ATTEMPTS, CATEGORY_GLOBAL, maxTeleportAttempts, 1, 10,
+		maxTeleportAttempts = config.getInt(CONFIG_MAX_TELEPORT_ATTEMPTS, CATEGORY_GLOBAL, maxTeleportAttempts, 1, 100,
 				comment);
 
 		comment = "Wait time between attempts in seconds";
-		timeBetweenAttempts = config.getInt(CONFIG_TIME_BETWEEN_ATTEMPTS, CATEGORY_GLOBAL, timeBetweenAttempts, 0, 60,
+		timeBetweenAttempts = config.getInt(CONFIG_TIME_BETWEEN_ATTEMPTS, CATEGORY_GLOBAL, timeBetweenAttempts, 0, 60 * 15,
 				comment);
 
 		comment = "Allow teleport landings in water";
