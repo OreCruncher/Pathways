@@ -44,10 +44,10 @@ import net.minecraft.util.StatCollector;
 public class ConfigureCommand extends CommandBase {
 
 	private static final String command = "tconfigure";
-	private static int CMD_SUBCOMMAND = 0;
-	private static int CMD_NAME = 1;
-	private static int CMD_MIN_RANGE = 2;
-	private static int CMD_MAX_RANGE = 3;
+	private static final int CMD_SUBCOMMAND = 0;
+	private static final int CMD_NAME = 1;
+	private static final int CMD_MIN_RANGE = 2;
+	private static final int CMD_MAX_RANGE = 3;
 
 	@Override
 	public String getCommandName() {

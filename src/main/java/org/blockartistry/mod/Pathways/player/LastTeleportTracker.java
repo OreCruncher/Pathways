@@ -59,7 +59,12 @@ public final class LastTeleportTracker {
 		setLastTick(player, getCurrentTick());
 	}
 
+	public static int cooldownTicksRemaining(final EntityPlayerMP player) {
+		final int timeRemaining = (getLastTick(player) + TELEPORT_TICK_INTERVAL) - getCurrentTick();
+		return timeRemaining < 0 ? 0 : timeRemaining;
+	}
+	
 	public static boolean isCooldownRestricted(final EntityPlayerMP player) {
-		return (getCurrentTick() - getLastTick(player)) < TELEPORT_TICK_INTERVAL;
+		return cooldownTicksRemaining(player) > 0;
 	}
 }

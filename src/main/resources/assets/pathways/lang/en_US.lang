@@ -9,7 +9,7 @@ msg.Pathways.TeleportedTo=§oTeleport to %s, %d, %d, %d
 msg.Pathways.NoClearSpot=§b§oDiffuse energy at the target location prevents teleport.
 msg.Pathways.DimensionNotLoaded=§b§oThe energy of the dimension is too fragile for teleport.
 msg.Pathways.CannotRideEntity=§b§oThe mount would surely die if you attempt the teleport.
-msg.Pathways.TeleportCooldownActive=§bYou must wait a bit longer before another teleport.
+msg.Pathways.TeleportCooldownActive=§bYou must wait %.1f seconds before another teleport.
 
 msg.Pathways.TeleportCommandUsage=/%s <locationName>
 msg.Pathways.TeleportCommandError.missingName=§cLocation name has not been specified.

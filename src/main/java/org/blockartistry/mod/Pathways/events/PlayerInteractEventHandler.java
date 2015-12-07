@@ -81,11 +81,11 @@ public final class PlayerInteractEventHandler {
 		if (world.isRemote)
 			return;
 
-		String playerMessage = null;
-		final EntityPlayerMP player = (EntityPlayerMP) event.entityPlayer;
 		final TileEntity te = world.getTileEntity(event.x, event.y, event.z);
 		if (te instanceof TileEntitySign) {
 			
+			String playerMessage = null;
+			final EntityPlayerMP player = (EntityPlayerMP) event.entityPlayer;
 			final TileEntitySign sign = (TileEntitySign) te;
 			
 			switch (InteractionType.getInteractionType(event)) {
@@ -106,9 +106,9 @@ public final class PlayerInteractEventHandler {
 			default:
 				;
 			}
+			
+			if (playerMessage != null && !playerMessage.isEmpty())
+				player.addChatComponentMessage(new ChatComponentText(playerMessage));
 		}
-		
-		if (playerMessage != null && !playerMessage.isEmpty())
-			player.addChatComponentMessage(new ChatComponentText(playerMessage));
 	}
 }

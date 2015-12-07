@@ -74,7 +74,7 @@ public abstract class Target {
 	public void travel(final EntityPlayerMP player) {
 		String playerMessage = null;
 		if (LastTeleportTracker.isCooldownRestricted(player)) {
-			playerMessage = StatCollector.translateToLocal("msg.Pathways.TeleportCooldownActive");
+			playerMessage = StatCollector.translateToLocalFormatted("msg.Pathways.TeleportCooldownActive", LastTeleportTracker.cooldownTicksRemaining(player)/20.0F);
 		} else if (!isDimensionLoaded(this.location.dimension)) {
 			playerMessage = StatCollector.translateToLocal("msg.Pathways.DimensionNotLoaded");
 		} else if (player.riddenByEntity != null || player.ridingEntity != null) {
