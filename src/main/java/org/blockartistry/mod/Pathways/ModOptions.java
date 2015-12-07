@@ -47,15 +47,18 @@ public final class ModOptions {
 	protected static int timeBetweenAttempts = 10;
 	protected static final String CONFIG_ALLOW_WATER_LANDING = "Allow Water Landings";
 	protected static boolean allowWaterLandings = false;
-	
+
 	protected static final String CATEGORY_COMMANDS = "commands";
 	protected static final String CONFIG_COMMAND_ALIAS = "Command Alias";
 	protected static final String CONFIG_COMMAND_OP_ONLY = "Op Only";
-	
+	protected static final String CONFIG_COMMAND_ENABLE = "Enable Command";
+
 	protected static final String CATEGORY_TELEPORT = "commands.teleport";
+	protected static boolean commandTeleportEnable = true;
 	protected static String commandTeleportAlias = "port,tele";
 	protected static boolean commandTeleportOpOnly = true;
 	protected static final String CATEGORY_CONFIGURE = "commands.configure";
+	protected static boolean commandConfigureEnable = true;
 	protected static String commandConfigureAlias = "tconfig,tc";
 	protected static boolean commandConfigureOpOnly = true;
 
@@ -76,29 +79,38 @@ public final class ModOptions {
 				comment);
 
 		comment = "Wait time between attempts in seconds";
-		timeBetweenAttempts = config.getInt(CONFIG_TIME_BETWEEN_ATTEMPTS, CATEGORY_GLOBAL, timeBetweenAttempts, 0, 60 * 15,
-				comment);
+		timeBetweenAttempts = config.getInt(CONFIG_TIME_BETWEEN_ATTEMPTS, CATEGORY_GLOBAL, timeBetweenAttempts, 0,
+				60 * 15, comment);
 
 		comment = "Allow teleport landings in water";
-		allowWaterLandings = config.getBoolean(CONFIG_ALLOW_WATER_LANDING, CATEGORY_GLOBAL,
-				allowWaterLandings, comment);
-		
+		allowWaterLandings = config.getBoolean(CONFIG_ALLOW_WATER_LANDING, CATEGORY_GLOBAL, allowWaterLandings,
+				comment);
+
 		// CATEGORY: command.teleport
+		comment = "Enable /teleport command";
+		commandTeleportEnable = config.getBoolean(CONFIG_COMMAND_ENABLE, CATEGORY_TELEPORT, commandTeleportEnable,
+				comment);
+
 		comment = "Alias names for the /teleport command";
 		commandTeleportAlias = config.getString(CONFIG_COMMAND_ALIAS, CATEGORY_TELEPORT, commandTeleportAlias, comment);
-		
+
 		comment = "Restrict teleport command to ops";
-		commandTeleportOpOnly = config.getBoolean(CONFIG_COMMAND_OP_ONLY, CATEGORY_TELEPORT,
-				commandTeleportOpOnly, comment);
-		
+		commandTeleportOpOnly = config.getBoolean(CONFIG_COMMAND_OP_ONLY, CATEGORY_TELEPORT, commandTeleportOpOnly,
+				comment);
+
 		// CATEGORY: command.configure
+		comment = "Enable /tconfigure command";
+		commandConfigureEnable = config.getBoolean(CONFIG_COMMAND_ENABLE, CATEGORY_CONFIGURE, commandConfigureEnable,
+				comment);
+
 		comment = "Alias names for the /tconfigure command";
-		commandConfigureAlias = config.getString(CONFIG_COMMAND_ALIAS, CATEGORY_CONFIGURE, commandConfigureAlias, comment);
+		commandConfigureAlias = config.getString(CONFIG_COMMAND_ALIAS, CATEGORY_CONFIGURE, commandConfigureAlias,
+				comment);
 
 		comment = "Restrict configure command to ops";
-		commandConfigureOpOnly = config.getBoolean(CONFIG_COMMAND_OP_ONLY, CATEGORY_CONFIGURE,
-				commandConfigureOpOnly, comment);
-}
+		commandConfigureOpOnly = config.getBoolean(CONFIG_COMMAND_OP_ONLY, CATEGORY_CONFIGURE, commandConfigureOpOnly,
+				comment);
+	}
 
 	public static boolean getEnableDebugLogging() {
 		return enableDebugLogging;
@@ -111,27 +123,35 @@ public final class ModOptions {
 	public static int getMaxTeleportAttempts() {
 		return maxTeleportAttempts;
 	}
-	
+
 	public static int getTimeBetweenAttempts() {
 		return timeBetweenAttempts;
 	}
-	
+
 	public static boolean getAllowWaterLandings() {
 		return allowWaterLandings;
+	}
+
+	public static boolean getCommandTeleportEnable() {
+		return commandTeleportEnable;
 	}
 
 	public static String[] getTeleportCommandAlias() {
 		return StringUtils.split(commandTeleportAlias, ',');
 	}
-	
+
 	public static boolean getCommandTeleportOpOnly() {
 		return commandTeleportOpOnly;
+	}
+
+	public static boolean getCommandConfigureEnable() {
+		return commandConfigureEnable;
 	}
 
 	public static String[] getConfigureCommandAlias() {
 		return StringUtils.split(commandConfigureAlias, ',');
 	}
-	
+
 	public static boolean getCommandConfigureOpOnly() {
 		return commandConfigureOpOnly;
 	}

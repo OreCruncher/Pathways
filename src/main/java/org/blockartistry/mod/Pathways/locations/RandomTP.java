@@ -31,7 +31,6 @@ import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import org.blockartistry.mod.Pathways.ModLog;
 import org.blockartistry.mod.Pathways.ModOptions;
-import org.blockartistry.mod.Pathways.util.XorShiftRandom;
 
 import net.minecraft.block.Block;
 import net.minecraft.init.Blocks;
@@ -92,7 +91,7 @@ public final class RandomTP extends Target {
 		if (world == null)
 			return null;
 
-		final Random rand = XorShiftRandom.shared;
+		final Random rand = new Random();
 
 		final int range = maxRange * 2;
 		int chunkX = 0;

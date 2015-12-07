@@ -24,6 +24,7 @@
 
 package org.blockartistry.mod.Pathways.proxy;
 
+import org.blockartistry.mod.Pathways.ModOptions;
 import org.blockartistry.mod.Pathways.VersionCheck;
 import org.blockartistry.mod.Pathways.commands.ConfigureCommand;
 import org.blockartistry.mod.Pathways.commands.TeleportCommand;
@@ -55,7 +56,10 @@ public class Proxy {
 	}
 	
 	public void serverStarting(final FMLServerStartingEvent event) {
-		event.registerServerCommand(new TeleportCommand());
-		event.registerServerCommand(new ConfigureCommand());
+		if(ModOptions.getCommandTeleportEnable())
+			event.registerServerCommand(new TeleportCommand());
+		
+		if(ModOptions.getCommandConfigureEnable())
+			event.registerServerCommand(new ConfigureCommand());
 	}
 }
