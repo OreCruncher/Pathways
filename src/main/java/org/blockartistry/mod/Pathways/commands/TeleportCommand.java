@@ -73,7 +73,7 @@ public class TeleportCommand extends CommandBase {
 				player.addChatComponentMessage(new ChatComponentText(EnumChatFormatting.RED
 						+ StatCollector.translateToLocal("msg.Pathways.TeleportCommandError.missingName")));
 			} else {
-				TargetManager.execute(player, as[0]);
+				TargetManager.execute(player, as[0], false);
 			}
 		}
 	}

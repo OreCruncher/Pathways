@@ -62,6 +62,18 @@ public final class ModOptions {
 	protected static String commandConfigureAlias = "tconfig,tc";
 	protected static boolean commandConfigureOpOnly = true;
 
+	protected static final String CATEGORY_DEATH = "global.player death";
+	protected static final String CONFIG_DEATH_TARGET = "Target";
+	protected static String deathTarget = "";
+	protected static final String CONFIG_DEATH_IGNORE_BED = "Ignore Bed";
+	protected static boolean deathIgnoreBed = false;
+
+	protected static final String CATEGORY_PLAYER_JOIN = "global.player join";
+	protected static final String CONFIG_JOIN_TARGET = "Target";
+	protected static String joinTarget = "";
+	protected static final String CONFIG_ONLY_NEW_PLAYER = "Only New Players";
+	protected static boolean onlyNewPlayers = true;
+
 	public static void load(final Configuration config) {
 
 		// CATEGORY: Logging
@@ -110,6 +122,20 @@ public final class ModOptions {
 		comment = "Restrict configure command to ops";
 		commandConfigureOpOnly = config.getBoolean(CONFIG_COMMAND_OP_ONLY, CATEGORY_CONFIGURE, commandConfigureOpOnly,
 				comment);
+
+		// CATEGORY: global.player death
+		comment = "Teleport target for when a player dies/respawns";
+		deathTarget = config.getString(CONFIG_DEATH_TARGET, CATEGORY_DEATH, deathTarget, comment);
+
+		comment = "Ignore player bed position when respawning";
+		deathIgnoreBed = config.getBoolean(CONFIG_DEATH_IGNORE_BED, CATEGORY_DEATH, deathIgnoreBed, comment);
+
+		// CATEGORY: global.player join
+		comment = "Teleport target for when a new player joins";
+		joinTarget = config.getString(CONFIG_JOIN_TARGET, CATEGORY_PLAYER_JOIN, joinTarget, comment);
+
+		comment = "Only when new players join, not returning old players";
+		onlyNewPlayers = config.getBoolean(CONFIG_ONLY_NEW_PLAYER, CATEGORY_PLAYER_JOIN, onlyNewPlayers, comment);
 	}
 
 	public static boolean getEnableDebugLogging() {
@@ -154,5 +180,21 @@ public final class ModOptions {
 
 	public static boolean getCommandConfigureOpOnly() {
 		return commandConfigureOpOnly;
+	}
+
+	public static String getPlayerDeathTarget() {
+		return deathTarget;
+	}
+
+	public static boolean getDeathIgnoreBed() {
+		return deathIgnoreBed;
+	}
+
+	public static String getPlayerJoinTarget() {
+		return joinTarget;
+	}
+	
+	public static boolean getOnlyNewPlayers() {
+		return onlyNewPlayers;
 	}
 }

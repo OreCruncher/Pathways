@@ -89,13 +89,13 @@ public final class TargetManager {
 		prop.set(temp.toArray(new String[temp.size()]));
 	}
 
-	public static void execute(final EntityPlayerMP player, final String target) {
+	public static void execute(final EntityPlayerMP player, final String target, final boolean onDeath) {
 		final Target t = targets.get(target);
 		if (t == null) {
 			player.addChatComponentMessage(
 					new ChatComponentText(StatCollector.translateToLocal("msg.Pathways.TeleportCommandError.unknownTarget")));
 		} else {
-			t.travel(player);
+			t.travel(player, onDeath);
 		}
 	}
 	

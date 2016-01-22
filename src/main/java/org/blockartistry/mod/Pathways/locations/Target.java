@@ -70,8 +70,27 @@ public abstract class Target {
 		final WorldServer server = MinecraftServer.getServer().worldServerForDimension(dimensionId);
 		return server != null;
 	}
+	
+	protected void deathTravel(final EntityPlayerMP player) {
+		// Set the teleport cool down at this point.  Not sure if a teleport
+		// will occur.  Reason is that the location select routine could
+		// cause chunk loading and we don't want a player spamming.
+		LastTeleportTracker.setLastTick(player);
+		
+		// Get the target location.  If null is returned that means that a
+		// valid location could not be found.
+		Coordinates target = null;
+		while((target = selectLocation()) == null);
+		// Set the target location
+		TargetManager.setPlayerLocation(player, target);
+	}
 
-	public void travel(final EntityPlayerMP player) {
+	public void travel(final EntityPlayerMP player, final boolean onDeath) {
+		if(onDeath) {
+			deathTravel(player);
+			return;
+		}
+		
 		String playerMessage = null;
 		if (LastTeleportTracker.isCooldownRestricted(player)) {
 			playerMessage = StatCollector.translateToLocalFormatted("msg.Pathways.TeleportCooldownActive", LastTeleportTracker.cooldownTicksRemaining(player)/20.0F);

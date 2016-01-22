@@ -99,7 +99,7 @@ public final class PlayerInteractEventHandler {
 			case Use:
 				if(TeleportSignTracking.canBeUsed(sign)) {
 					final String target = TeleportSignTracking.getTargetName(sign);
-					TargetManager.execute(player, target);
+					TargetManager.execute(player, target, false);
 				}
 				break;
 			case Nothing:

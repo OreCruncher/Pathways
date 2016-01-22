@@ -29,6 +29,7 @@ import org.blockartistry.mod.Pathways.VersionCheck;
 import org.blockartistry.mod.Pathways.commands.ConfigureCommand;
 import org.blockartistry.mod.Pathways.commands.TeleportCommand;
 import org.blockartistry.mod.Pathways.events.PlayerInteractEventHandler;
+import org.blockartistry.mod.Pathways.events.PlayerSpawnEventHandler;
 
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
@@ -37,29 +38,30 @@ import cpw.mods.fml.common.event.FMLServerStartingEvent;
 
 public class Proxy {
 
-	public void preInit(FMLPreInitializationEvent event) {
+	public void preInit(final FMLPreInitializationEvent event) {
 		// Register early to give the background process a good amount
 		// of time to get the mod version data
 		VersionCheck.register();
 	}
 
-	public void init(FMLInitializationEvent event) {
+	public void init(final FMLInitializationEvent event) {
 		PlayerInteractEventHandler.initialize();
+		PlayerSpawnEventHandler.initialize();
 	}
 
-	public void postInit(FMLPostInitializationEvent event) {
+	public void postInit(final FMLPostInitializationEvent event) {
 
 	}
 
-	public void serverLoad(FMLServerStartingEvent event) {
+	public void serverLoad(final FMLServerStartingEvent event) {
 
 	}
-	
+
 	public void serverStarting(final FMLServerStartingEvent event) {
-		if(ModOptions.getCommandTeleportEnable())
+		if (ModOptions.getCommandTeleportEnable())
 			event.registerServerCommand(new TeleportCommand());
-		
-		if(ModOptions.getCommandConfigureEnable())
+
+		if (ModOptions.getCommandConfigureEnable())
 			event.registerServerCommand(new ConfigureCommand());
 	}
 }
