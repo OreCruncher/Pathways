@@ -26,17 +26,16 @@ package org.blockartistry.mod.Pathways.events;
 
 import org.apache.commons.lang3.StringUtils;
 import org.blockartistry.mod.Pathways.ModOptions;
+import org.blockartistry.mod.Pathways.Pathways;
 import org.blockartistry.mod.Pathways.locations.TargetManager;
-import org.blockartistry.mod.Pathways.player.PlayerProperties;
-
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent;
 import cpw.mods.fml.common.gameevent.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 
 public class PlayerSpawnEventHandler {
 
@@ -52,17 +51,29 @@ public class PlayerSpawnEventHandler {
 		FMLCommonHandler.instance().bus().register(handler);
 	}
 
-	@SubscribeEvent()
-	public void entityConstructing(final EntityConstructing event) {
-		if (event.entity instanceof EntityPlayer && PlayerProperties.get((EntityPlayer) event.entity) == null)
-			PlayerProperties.register((EntityPlayer) event.entity);
+	private static final String NBT_KEY = Pathways.MOD_ID + ".joined";
+
+	private static boolean isFirstJoin(final EntityPlayer player) {
+
+		final NBTTagCompound data = player.getEntityData();
+		NBTTagCompound persistent;
+		if (!data.hasKey(EntityPlayer.PERSISTED_NBT_TAG)) {
+			data.setTag(EntityPlayer.PERSISTED_NBT_TAG, (persistent = new NBTTagCompound()));
+		} else {
+			persistent = data.getCompoundTag(EntityPlayer.PERSISTED_NBT_TAG);
+		}
+
+		if (!persistent.hasKey(NBT_KEY)) {
+			persistent.setBoolean(NBT_KEY, true);
+			return true;
+		}
+
+		return false;
 	}
 
 	@SubscribeEvent()
 	public void playerJoinEvent(final PlayerLoggedInEvent event) {
-		final PlayerProperties props = PlayerProperties.get(event.player);
-		if (props.isNew || !ONLY_NEW_PLAYERS) {
-			props.isNew = false;
+		if (isFirstJoin(event.player) || !ONLY_NEW_PLAYERS) {
 			if (!StringUtils.isEmpty(PLAYER_JOIN_TARGET))
 				TargetManager.execute((EntityPlayerMP) event.player, PLAYER_JOIN_TARGET, true);
 		}
